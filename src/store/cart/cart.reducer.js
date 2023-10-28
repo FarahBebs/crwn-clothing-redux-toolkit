@@ -38,21 +38,6 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 const clearCartItem = (cartItems, cartItemToClear) =>
   cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 
-export const addItemToCart = (cartItems, productToAdd) => {
-  const newCartItems = addCartItem(cartItems, productToAdd);
-  return setCartItems(newCartItems);
-};
-
-export const removeItemFromCart = (cartItems, cartItemToRemove) => {
-  const newCartItems = removeCartItem(cartItems, cartItemToRemove);
-  return setCartItems(newCartItems);
-};
-
-export const clearItemFromCart = (cartItems, cartItemToClear) => {
-  const newCartItems = clearCartItem(cartItems, cartItemToClear);
-  return setCartItems(newCartItems);
-};
-
 const CART_INITIAL_STATE = {
   isCartOpen: false,
   cartItems: [],
@@ -62,15 +47,26 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState: CART_INITIAL_STATE,
   reducers: {
-    setCartItems(state, action) {
-      state.cartItems = action.payload;
-    },
     setIsCartOpen(state, action) {
       state.isCartOpen = action.payload;
+    },
+    addItemToCart(state, action) {
+      state.cartItems = addCartItem(state.cartItems, action.payload);
+    },
+    removeItemFromCart(state, action) {
+      state.cartItems = removeCartItem(state.cartItems, action.payload);
+    },
+    clearItemFromCart(state, action) {
+      state.cartItems = clearCartItem(state.cartItems, action.payload);
     },
   },
 });
 
-export const { setCartItems } = cartSlice.actions;
-export const { setIsCartOpen } = cartSlice.actions;
+export const {
+  setIsCartOpen,
+  addItemToCart,
+  removeItemFromCart,
+  clearItemFromCart,
+} = cartSlice.actions;
+
 export const cartReducer = cartSlice.reducer;
